@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 var this_year = DateTime.now().year.toString();
 
 class AppConfig {
-  static String copyright_text = "@ KingStall " + this_year; //this shows in the splash screen
+  static String copyright_text =
+      "@ KingStall " + this_year; //this shows in the splash screen
   static String app_name = "KingStall"; //this shows in the splash screen
 
   //configure this
   static const bool HTTPS = true;
 
   //configure this
-  static const DOMAIN_PATH = "www.kingstall.com/";
+  static const DOMAIN_PATH = "www.kingstall.com";
+
   //static const DOMAIN_PATH = "demo.activeitzone.com/ecommerce_flutter_demo";
   //static const DOMAIN_PATH = "adbuild.ae";
 

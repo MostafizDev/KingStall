@@ -50,8 +50,7 @@ class _CartState extends State<Cart> {
   }
 
   fetchData() async {
-
-  var cartResponseList =
+    var cartResponseList =
         await CartRepository().getCartResponseList(user_id.value);
 
     if (cartResponseList != null && cartResponseList.length > 0) {
@@ -85,7 +84,9 @@ class _CartState extends State<Cart> {
     var partialTotalString = "";
     if (_shopList[index].cart_items.length > 0) {
       _shopList[index].cart_items.forEach((cart_item) {
-        partialTotal += (cart_item.price + cart_item.tax) * cart_item.quantity;
+        partialTotal += (double.parse(cart_item.price.toString()) +
+                double.parse(cart_item.tax.toString())) *
+            double.parse(cart_item.quantity.toString());
         partialTotalString = "${cart_item.currency_symbol}${partialTotal}";
       });
     }
@@ -575,149 +576,162 @@ class _CartState extends State<Cart> {
       ),
       elevation: 0.0,
       child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-        Container(
-            width: 100,
-            height: 100,
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/placeholder.png',
-                  image: AppConfig.BASE_PATH +
-                      _shopList[seller_index]
-                          .cart_items[item_index]
-                          .product_thumbnail_image,
-                  fit: BoxFit.fitWidth,
-                ))),
-        Container(
-          width: 170,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _shopList[seller_index]
-                          .cart_items[item_index]
-                          .product_name,
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(
-                          color: MyTheme.font_grey,
-                          fontSize: 14,
-                          height: 1.6,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            _shopList[seller_index]
-                                    .cart_items[item_index]
-                                    .currency_symbol +
-                                (_shopList[seller_index]
-                                            .cart_items[item_index]
-                                            .price *
-                                        _shopList[seller_index]
-                                            .cart_items[item_index]
-                                            .quantity)
-                                    .toString(),
-                            textAlign: TextAlign.left,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextStyle(
-                                color: MyTheme.accent_color,
-                                fontSize: 14,
-                                height: 1.6,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        Spacer(),
-                        SizedBox(
-                          height: 28,
-                          child: InkWell(
-                            onTap: () {},
-                            child: IconButton(
-                              onPressed: () {
-                                onPressDelete(_shopList[seller_index]
-                                    .cart_items[item_index]
-                                    .id);
-                              },
-                              icon: Icon(
-                                Icons.delete_forever_outlined,
-                                color: MyTheme.medium_grey,
-                                size: 24,
-                              ),
+        Expanded(
+          flex: 2,
+          child: Container(
+              width: 100,
+              height: 100,
+              child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/placeholder.png',
+                    image: AppConfig.BASE_PATH +
+                        _shopList[seller_index]
+                            .cart_items[item_index]
+                            .product_thumbnail_image,
+                    fit: BoxFit.fitWidth,
+                  ))),
+        ),
+        Expanded(
+          flex: 2,
+          child: Container(
+            width: 170,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _shopList[seller_index]
+                            .cart_items[item_index]
+                            .product_name,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                            color: MyTheme.font_grey,
+                            fontSize: 14,
+                            height: 1.6,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              _shopList[seller_index]
+                                      .cart_items[item_index]
+                                      .currency_symbol +
+                                  (double.parse(_shopList[seller_index]
+                                              .cart_items[item_index]
+                                              .price
+                                              .toString()) *
+                                          double.parse(_shopList[seller_index]
+                                              .cart_items[item_index]
+                                              .quantity
+                                              .toString()))
+                                      .toString(),
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: MyTheme.accent_color,
+                                  fontSize: 14,
+                                  height: 1.6,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ],
+                          Spacer(),
+                          SizedBox(
+                            height: 28,
+                            child: InkWell(
+                              onTap: () {},
+                              child: IconButton(
+                                onPressed: () {
+                                  onPressDelete(_shopList[seller_index]
+                                      .cart_items[item_index]
+                                      .id);
+                                },
+                                icon: Icon(
+                                  Icons.delete_forever_outlined,
+                                  color: MyTheme.medium_grey,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-        Spacer(),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              SizedBox(
-                width: 28,
-                height: 28,
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
-                  child: Icon(
-                    Icons.add,
-                    color: MyTheme.accent_color,
-                    size: 18,
+        // Spacer(),
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    child: Icon(
+                      Icons.add,
+                      color: MyTheme.accent_color,
+                      size: 18,
+                    ),
+                    shape: CircleBorder(
+                      side:
+                          new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                    ),
+                    color: Colors.white,
+                    onPressed: () {
+                      onQuantityIncrease(seller_index, item_index);
+                    },
                   ),
-                  shape: CircleBorder(
-                    side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
-                  ),
-                  color: Colors.white,
-                  onPressed: () {
-                    onQuantityIncrease(seller_index, item_index);
-                  },
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                child: Text(
-                  _shopList[seller_index]
-                      .cart_items[item_index]
-                      .quantity
-                      .toString(),
-                  style: TextStyle(color: MyTheme.accent_color, fontSize: 16),
-                ),
-              ),
-              SizedBox(
-                width: 28,
-                height: 28,
-                child: FlatButton(
-                  padding: EdgeInsets.all(0),
-                  child: Icon(
-                    Icons.remove,
-                    color: MyTheme.accent_color,
-                    size: 18,
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  child: Text(
+                    _shopList[seller_index]
+                        .cart_items[item_index]
+                        .quantity
+                        .toString(),
+                    style: TextStyle(color: MyTheme.accent_color, fontSize: 16),
                   ),
-                  height: 30,
-                  shape: CircleBorder(
-                    side: new BorderSide(color: MyTheme.light_grey, width: 1.0),
-                  ),
-                  color: Colors.white,
-                  onPressed: () {
-                    onQuantityDecrease(seller_index, item_index);
-                  },
                 ),
-              )
-            ],
+                SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    child: Icon(
+                      Icons.remove,
+                      color: MyTheme.accent_color,
+                      size: 18,
+                    ),
+                    height: 30,
+                    shape: CircleBorder(
+                      side:
+                          new BorderSide(color: MyTheme.light_grey, width: 1.0),
+                    ),
+                    color: Colors.white,
+                    onPressed: () {
+                      onQuantityDecrease(seller_index, item_index);
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         )
       ]),
